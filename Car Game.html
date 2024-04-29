@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Game</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        body {
+            margin: 0px;
+            padding: 0px;
+            overflow: hidden;
+        }
+        .game-container {
+            width: 100%;
+            height: 100vh;
+            background-image: url("https://img.freepik.com/free-vector/aerial-view-garden-background_1308-27471.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+        .road {
+            width: 400px;
+            height: 100vh;
+            background-image: url("https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRFw8BR0Ys7bquw7Vue9OW6DknwBTDRoYqJ0aCOc6B7RsJuAHpI");
+            background-repeat: no-repeat;
+            background-size: cover;
+            box-shadow: 0 0 50px 10px #000000;
+            position: absolute;
+            left: 40%;
+            transform: translateX(-15%);    
+        }
+        .car {
+            width: 115px;
+            height: 180px;
+            background-image: url("https://static.vecteezy.com/system/resources/previews/009/380/944/non_2x/car-top-view-clipart-design-illustration-free-png.png") ;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="road"></div>
+        <div class="car"></div>
+    </div>
+    <script type="text/javascript">
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'ArrowLeft') {
+                moveLeft();
+            } else if (event.key === 'ArrowRight') {
+                moveRight();
+            } else if (event.key === 'ArrowUp') {
+                moveUp();
+            } else if (event.key === 'ArrowDown') {
+                moveDown();
+            }
+        });
+
+        function moveLeft() {
+            let car = document.querySelector('.car');
+            let carLeftPosition = parseInt(window.getComputedStyle(car).getPropertyValue('left'));
+            if (carLeftPosition > 0) {
+                car.style.left = (carLeftPosition - 5) + 'px';
+            }
+        }
+
+        function moveRight() {
+            let car = document.querySelector('.car');
+            let carLeftPosition = parseInt(window.getComputedStyle(car).getPropertyValue('left'));
+            if (carLeftPosition < (window.innerWidth - 30)) { 
+                car.style.left = (carLeftPosition + 5) + 'px';
+            }
+        }
+
+        function moveUp() {
+            let car = document.querySelector('.car');
+            let carBottomPosition = parseInt(window.getComputedStyle(car).getPropertyValue('bottom'));
+            if (carBottomPosition < (window.innerHeight - 60)) {
+                car.style.bottom = (carBottomPosition + 5) + 'px';
+            }
+        }
+
+        function moveDown() {
+            let car = document.querySelector('.car');
+            let carBottomPosition = parseInt(window.getComputedStyle(car).getPropertyValue('bottom'));
+            if (carBottomPosition > 0) {
+                car.style.bottom = (carBottomPosition - 5) + 'px';
+            }
+        }
+
+        function keepOnRoad() {
+            let car = document.querySelector('.car');
+            let road = document.querySelector('.road');
+            let carLeftPosition = parseInt(window.getComputedStyle(car).getPropertyValue('left'));
+            let carWidth = car.offsetWidth;
+            let roadLeftPosition = parseInt(window.getComputedStyle(road).getPropertyValue('left'));
+            let roadWidth = road.offsetWidth;
+            let maxLeft = roadLeftPosition + roadWidth - carWidth;
+            let maxRight = roadLeftPosition;
+            if (carLeftPosition < maxRight) {
+                car.style.left = maxRight + 'px';
+            } else if (carLeftPosition > maxLeft) {
+                car.style.left = maxLeft + 'px';
+            }
+            let carBottomPosition = parseInt(window.getComputedStyle(car).getPropertyValue('bottom'));
+            let roadHeight = road.offsetHeight;
+            let carHeight = car.offsetHeight;
+            let maxBottom = roadHeight - carHeight;
+            let minBottom = 0;
+            if (carBottomPosition < minBottom) {
+                car.style.bottom = minBottom + 'px';
+            } else if (carBottomPosition > maxBottom) {
+                car.style.bottom = maxBottom + 'px';
+            }
+        }
+
+        setInterval(keepOnRoad, 10);
+    </script>
+</body>
+</html>
